@@ -9,7 +9,7 @@ def validate_number(input)
 end
 
 def validate_greater_than0(input)
-  input.to_i > 0 || input.to_f > 0.0
+  input.to_f > 0.0
 end
 
 # Verify that the input string is a positive number (integer only)
@@ -18,7 +18,7 @@ def validate_whole_number(input)
 end
 
 def validate_not_less_than0(input)
-  input.to_i >= 0 || input.to_f >= 0.0
+  input.to_f >= 0.0
 end
 
 def validate_less_than12(input)
@@ -56,47 +56,60 @@ puts "We will now ask you to enter the duration of your loan.
 At the first prompt, please enter the duration in years.
 At the second prompt, add any additional months. For example,
 if your loan is for 6 years and 3 months, enter 6 at the first
-  prompt and 3 at the second. Please only enter whole numbers above 0."
+prompt and 3 at the second. Please only enter whole numbers above 0,
+unless prompted otherwise."
 puts "-------------------------------"
 
 loan_duration_in_years = ''
-loop do
-  prompt("Please enter the duration of your loan in years.
-  If the duration is for less than 12 months, enter 0 .")
-  loan_duration_in_years_input = gets.chomp
-
-  if validate_whole_number(loan_duration_in_years_input) &&
-     validate_not_less_than0(loan_duration_in_years_input)
-
-    loan_duration_in_years = convert_to_integer(loan_duration_in_years_input)
-    break
-  else
-    puts "That is not a valid duration. Please try again,
-    making sure you are only entering whole numbers above 0."
-  end
-end
-
 additional_months = ''
 loop do
-  prompt("Please enter any additional months.
-  If there are no additional months, enter 0 .")
-  additional_months_input = gets.chomp
+  loop do
+    prompt("Please enter the duration of your loan in years.
+    If the duration is for less than 12 months, enter 0 .")
+    loan_duration_in_years_input = gets.chomp
 
-  if validate_whole_number(additional_months_input) &&
-     validate_not_less_than0(additional_months_input) &&
-     validate_less_than12(additional_months_input)
+    if validate_whole_number(loan_duration_in_years_input) &&
+       validate_not_less_than0(loan_duration_in_years_input)
 
-    additional_months = convert_to_integer(additional_months_input)
-    break
+      loan_duration_in_years = convert_to_integer(loan_duration_in_years_input)
+      break
+    else
+      puts "That is not a valid duration. Please try again,
+      making sure you are only entering whole numbers above 0."
+    end
+  end
+
+  loop do
+    prompt("Please enter any additional months.
+    If there are no additional months, enter 0 .")
+    additional_months_input = gets.chomp
+
+    if validate_whole_number(additional_months_input) &&
+       validate_not_less_than0(additional_months_input) &&
+       validate_less_than12(additional_months_input)
+
+      additional_months = convert_to_integer(additional_months_input)
+      break
+    else
+      puts "That is not a valid duration. Please try again,
+      making sure you are only entering a whole number between 0 and 11."
+    end
+  end
+
+  if loan_duration_in_years == 0 &&
+     additional_months == 0
+    prompt("0 years and 0 months is not a valid duration.
+    Please try again, ensuring you enter a minimum duration of
+    1 month.")
   else
-    puts "That is not a valid duration. Please try again,
-    making sure you are only entering a whole number between 0 and 11."
+    break
   end
 end
 
 apr = ''
 loop do
-  prompt("Please enter the yearly interest rate (APR).")
+  prompt("Please enter the yearly interest rate (APR) as a percentage.
+  For example, if the APR is 5.2%, enter it as 5.2 or 5.2%.")
   apr_input = gets.chomp
 
   if apr_input[0] == "."
@@ -104,6 +117,10 @@ loop do
   end
 
   if apr_input[-1] == "%"
+    apr_input.chop!
+  end
+
+  if apr_input[-1] == "0"
     apr_input.chop!
   end
 
