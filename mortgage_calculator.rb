@@ -140,4 +140,4 @@ loan_duration_in_months = (loan_duration_in_years * 12) + additional_months
 monthly_payment = loan_amount * (monthly_interest_rate /
 (1 - ((1 + monthly_interest_rate)**(-loan_duration_in_months))))
 
-puts "Your repayments will be £#{monthly_payment.ceil(2)} per month."
+puts "Your repayments will be #{monthly_payment.ceil(2)} per month."
