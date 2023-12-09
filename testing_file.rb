@@ -1,11 +1,33 @@
-def test(b)
-  b.map {|letter| puts "I like the letter: #{letter}"}
-  p "b is #{b.object_id}" 
-  c = "22"
-  p "c is #{c.object_id}"
- end
+first = ''
+second = ''
 
-a = ['a', 'b', 'c']
-test(a)
+# def win?(first, second)
+#   ((first == 'rock') && (second == 'scissors' || 'lizard')) ||
+#     ((first == 'paper') && (second == 'rock' || 'spock')) ||
+#     ((first == 'scissors') && (second == 'paper' || 'lizard')) ||
+#     ((first == 'lizard') && (second == 'spock' || 'paper')) ||
+#     ((first == 'spock') && (second == 'scissors' || 'rock'))
+# end
 
-p "a is #{a.object_id}"
+  
+  
+def win?(first, second)
+  (first == 'rock' && ( (second == 'scissors') || (second == 'lizard') ) ) ||
+    (first == 'paper' && ( (second == 'rock') || (second == 'spock') ) ) ||
+    (first == 'scissors' && second == 'paper')
+end
+
+# puts "First #{first}"
+# puts "Second #{second}"
+
+
+one = 'paper'
+two = 'rock'
+
+puts "This is the return #{win?(one, two)}"
+
+# if win?('rock', 'lizard')
+#     puts("You won!")
+# else
+#   puts("no")
+# end

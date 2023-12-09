@@ -1,13 +1,26 @@
-VALID_CHOICES = %w(rock paper scissors)
+VALID_CHOICES = %w(rock paper scissors lizard spock)
 
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
+
+
 def win?(first, second)
-  (first == 'rock' && second == 'scissors') ||
-    (first == 'paper' && second == 'rock') ||
-    (first == 'scissors' && second == 'paper')
+  
+  winners_losers = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'lizard' => ['spock', 'paper'],
+  'spock' => ['scissors', 'rock']
+  }
+  
+  (first == 'rock' && ( (second == winners_losers.fetch('rock')[0]) || (second == winners_losers.fetch('rock')[1]) ) ) ||
+    (first == 'paper' && ( (second == winners_losers.fetch('paper')[0]) || (second == winners_losers.fetch('paper')[1]) ) ) ||
+    (first == 'scissors' && ( (second == winners_losers.fetch('scissors')[0]) || (second == winners_losers.fetch('scissors')[1]) ) ) ||
+    (first == 'lizard' && ( (second == winners_losers.fetch('lizard')[0]) || (second == winners_losers.fetch('lizard')[1]) ) ) ||
+    (first == 'spock' && ( (second == winners_losers.fetch('spock')[0]) || (second == winners_losers.fetch('spock')[1]) ) )
 end
 
 def display_result(player, computer)
