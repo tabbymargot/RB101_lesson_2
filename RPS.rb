@@ -33,7 +33,7 @@ loop do
   loses_against_player = ''
   loses_against_computer = ''
 
-  # Set the array containing the losing values againsr the player choice.
+  # Set the array containing the losing values against the player choice.
   winners_losers.select do |key, value|
     if key == player_choice
       loses_against_player = value
@@ -47,17 +47,20 @@ loop do
     end
   end
 
-  if player_choice &&
-     (
-     (computer_choice == loses_against_player[0]) ||
-     (computer_choice == loses_against_player[1])
-   )
+  # Returns true if first choice wins against either of the values
+  # in second choice
+  def win?(first_choice, loses_against_first_choice, second_choice)
+    first_choice &&
+      (
+       (second_choice == loses_against_first_choice[0]) ||
+       (second_choice == loses_against_first_choice[1])
+     )
+  end
+
+  # If win? returns true, output the prompt
+  if win?(player_choice, loses_against_player, computer_choice)
     prompt("You won!")
-  elsif computer_choice &&
-        (
-        (player_choice == loses_against_computer[0]) ||
-        (player_choice == loses_against_computer[1])
-      )
+  elsif win?(computer_choice, loses_against_computer, player_choice)
     prompt("Computer won!")
   else
     puts "It's a tie!"
