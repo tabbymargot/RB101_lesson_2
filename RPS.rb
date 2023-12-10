@@ -1,23 +1,41 @@
-VALID_CHOICES = %w(rock paper scissors lizard spock)
+VALID_CHOICES = {
+  'r' => 'rock',
+  'p' => 'paper',
+  'sc' => 'scissors',
+  'l' => 'lizard',
+  'sp' => 'spock'
+}
 
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
 loop do
+  player_input = ''
   player_choice = ''
   loop do
-    prompt("Choose one: #{VALID_CHOICES.join(', ')}")
-    player_choice = Kernel.gets().chomp()
+    prompt("Choose one of the following options:")
+    VALID_CHOICES.each do |valid_choice_key, valid_choice_value|
+      prompt("Type #{valid_choice_key} for #{valid_choice_value}")
+    end
 
-    if VALID_CHOICES.include?(player_choice)
+    player_input = Kernel.gets().chomp()
+
+    VALID_CHOICES.select do |valid_choice_key, valid_choice_value|
+      if player_input == valid_choice_key
+        player_choice = valid_choice_value
+        break
+      end
+    end
+
+    if VALID_CHOICES.values.include?(player_choice)
       break
     else
       prompt("That's not a valid choice.")
     end
   end
 
-  computer_choice = VALID_CHOICES.sample
+  computer_choice = VALID_CHOICES.values.sample
 
   prompt("You chose: #{player_choice}; Computer chose: #{computer_choice}")
 
@@ -47,17 +65,15 @@ loop do
     end
   end
 
-  if player_choice &&
-     (
-     (computer_choice == loses_against_player[0]) ||
-     (computer_choice == loses_against_player[1])
-   )
+  if player_choice && (
+      (computer_choice == loses_against_player[0]) ||
+      (computer_choice == loses_against_player[1])
+    )
     prompt("You won!")
-  elsif computer_choice &&
-        (
-        (player_choice == loses_against_computer[0]) ||
-        (player_choice == loses_against_computer[1])
-      )
+  elsif computer_choice && (
+      (player_choice == loses_against_computer[0]) ||
+      (player_choice == loses_against_computer[1])
+    )
     prompt("Computer won!")
   else
     puts "It's a tie!"
