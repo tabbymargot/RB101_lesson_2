@@ -5,6 +5,8 @@ def prompt(message)
 end
 
 loop do
+  # SECTION 1 - Get choices from player and computer
+  
   player_choice = ''
   loop do
     prompt("Choose one: #{VALID_CHOICES.join(', ')}")
@@ -20,7 +22,9 @@ loop do
   computer_choice = VALID_CHOICES.sample
 
   prompt("You chose: #{player_choice}; Computer chose: #{computer_choice}")
-
+  
+  # SECTION 2 - Compare choices and determine the winner
+  
   # Keys are winning choices, values are losing choices
   winners_losers = {
     'rock' => ['scissors', 'lizard'],
@@ -33,14 +37,14 @@ loop do
   values_that_lose_against_player_choice = ''
   values_that_lose_against_computer_choice = ''
 
-  # Set the array containing the losing values against the player choice.
+  # Create the array containing the values that lose against the player choice.
   winners_losers.select do |key, value|
     if key == player_choice
       values_that_lose_against_player_choice = value
     end
   end
 
-  # Set the array containing the losing values against the computer choice.
+  # Create the array containing the values that lose against the computer choice.
   winners_losers.select do |key, value|
     if key == computer_choice
       values_that_lose_against_computer_choice = value
@@ -57,7 +61,6 @@ loop do
      )
   end
 
-  # If win? returns true, output the prompt
   if win?(player_choice, values_that_lose_against_player_choice,
           computer_choice)
     prompt("You won!")
@@ -67,6 +70,8 @@ loop do
   else
     puts "It's a tie!"
   end
+  
+  # SECTION 3 - Ask if player wants to play again
 
   prompt("Do you want to play again?")
   answer = Kernel.gets().chomp()
