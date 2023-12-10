@@ -30,37 +30,39 @@ loop do
     'spock' => ['scissors', 'rock']
   }
 
-  loses_against_player = ''
-  loses_against_computer = ''
+  values_that_lose_against_player_choice = ''
+  values_that_lose_against_computer_choice = ''
 
   # Set the array containing the losing values against the player choice.
   winners_losers.select do |key, value|
     if key == player_choice
-      loses_against_player = value
+      values_that_lose_against_player_choice = value
     end
   end
 
   # Set the array containing the losing values against the computer choice.
   winners_losers.select do |key, value|
     if key == computer_choice
-      loses_against_computer = value
+      values_that_lose_against_computer_choice = value
     end
   end
 
   # Returns true if first choice wins against either of the values
   # in second choice
-  def win?(first_choice, loses_against_first_choice, second_choice)
+  def win?(first_choice, values_that_lose_against_first_choice, second_choice)
     first_choice &&
       (
-       (second_choice == loses_against_first_choice[0]) ||
-       (second_choice == loses_against_first_choice[1])
+       (second_choice == values_that_lose_against_first_choice[0]) ||
+       (second_choice == values_that_lose_against_first_choice[1])
      )
   end
 
   # If win? returns true, output the prompt
-  if win?(player_choice, loses_against_player, computer_choice)
+  if win?(player_choice, values_that_lose_against_player_choice,
+          computer_choice)
     prompt("You won!")
-  elsif win?(computer_choice, loses_against_computer, player_choice)
+  elsif win?(computer_choice, values_that_lose_against_computer_choice,
+             player_choice)
     prompt("Computer won!")
   else
     puts "It's a tie!"
