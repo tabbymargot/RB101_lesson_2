@@ -85,7 +85,7 @@ loop do
              player_choice)
     prompt("Computer won!")
   else
-    puts "It's a tie!"
+    prompt("It's a tie!")
   end
 
   # SECTION 3 - Ask if player wants to play again
