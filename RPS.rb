@@ -39,9 +39,9 @@ loop do
   computer_choice = VALID_CHOICES.values.sample
 
   prompt("You chose: #{player_choice}; Computer chose: #{computer_choice}")
-  
+
   # SECTION 2 - Compare choices and determine the winner
-  
+
   # Keys are winning choices, values are losing choices
   winners_losers = {
     'rock' => ['scissors', 'lizard'],
@@ -61,7 +61,8 @@ loop do
     end
   end
 
-  # Create the array containing the values that lose against the computer choice.
+  # Create the array containing the values that lose against the computer
+  # choice.
   winners_losers.select do |key, value|
     if key == computer_choice
       values_that_lose_against_computer_choice = value
@@ -71,11 +72,10 @@ loop do
   # Returns true if first choice wins against either of the values
   # in second choice
   def win?(first_choice, values_that_lose_against_first_choice, second_choice)
-    first_choice &&
-      (
-       (second_choice == values_that_lose_against_first_choice[0]) ||
-       (second_choice == values_that_lose_against_first_choice[1])
-     )
+    first_choice && (
+      (second_choice == values_that_lose_against_first_choice[0]) ||
+      (second_choice == values_that_lose_against_first_choice[1])
+    )
   end
 
   if win?(player_choice, values_that_lose_against_player_choice,
@@ -87,7 +87,7 @@ loop do
   else
     puts "It's a tie!"
   end
-  
+
   # SECTION 3 - Ask if player wants to play again
 
   prompt("Do you want to play again?")
