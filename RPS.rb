@@ -6,6 +6,14 @@ VALID_CHOICES = {
   'sp' => 'spock'
 }
 
+WINNERS_LOSERS = {
+  'rock' => ['scissors', 'lizard'],
+  'paper' => ['rock', 'spock'],
+  'scissors' => ['paper', 'lizard'],
+  'lizard' => ['spock', 'paper'],
+  'spock' => ['scissors', 'rock']
+}
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
@@ -54,17 +62,8 @@ loop do
 
     # SECTION 2 - COMPARE CHOICES AND DETERMINE THE WINNER OF EACH ROUND
 
-    # Keys are winning choices, values are losing choices
-    winners_losers = {
-      'rock' => ['scissors', 'lizard'],
-      'paper' => ['rock', 'spock'],
-      'scissors' => ['paper', 'lizard'],
-      'lizard' => ['spock', 'paper'],
-      'spock' => ['scissors', 'rock']
-    }
-
     # Create arrays containing losing values for each player.
-    # This method takes the winners_losers hash and interates through
+    # This method takes the WINNERS_LOSERS hash and interates through
     # each key / value pair. When the key matches the chosen item, 
     # the key's values are returned and stored in a variable.
     
@@ -76,8 +75,8 @@ loop do
       end
     end
     
-    player_losing_values = return_losing_values(winners_losers, player_choice)
-    computer_losing_values = return_losing_values(winners_losers, computer_choice)
+    player_losing_values = return_losing_values(WINNERS_LOSERS, player_choice)
+    computer_losing_values = return_losing_values(WINNERS_LOSERS, computer_choice)
 
 
     # Returns true if second_choice is included in the losing_values array.
