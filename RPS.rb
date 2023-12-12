@@ -63,42 +63,44 @@ loop do
       'spock' => ['scissors', 'rock']
     }
 
-    values_that_lose_against_player_choice = ''
-    values_that_lose_against_computer_choice = ''
-
-    # Create the array containing the values that lose against the player
-    # choice.
-    winners_losers.select do |key, value|
-      if key == player_choice
-        values_that_lose_against_player_choice = value
+    # Create arrays containing losing values for each player.
+    # This method takes the winners_losers hash and interates through
+    # each key / value pair. When the key matches the chosen item, 
+    # the key's values are returned and stored in a variable.
+    
+    def return_losing_values(winners_losers, choice)
+      winners_losers.select do |key, value|
+        if key == choice
+          return value
+        end
       end
     end
+    
+    player_losing_values = return_losing_values(winners_losers, player_choice)
+    computer_losing_values = return_losing_values(winners_losers, computer_choice)
 
-    # Create the array containing the values that lose against the computer
-    # choice.
-    winners_losers.select do |key, value|
-      if key == computer_choice
-        values_that_lose_against_computer_choice = value
-      end
+
+    # Returns true if second_choice is included in the losing_values array.
+    def win?(first_choice, losing_values, second_choice)
+      first_choice && losing_values.include?(second_choice)
+    end
+    
+    def increment_counter(counter)
+      counter += 1
+    end   
+    
+    def print_result()
+      prompt("You won this round!")
     end
 
-    # Returns true if first choice wins against either of the values
-    # in second choice
-    def win?(first_choice, values_that_lose_against_first_choice, second_choice)
-      first_choice && (
-        (second_choice == values_that_lose_against_first_choice[0]) ||
-        (second_choice == values_that_lose_against_first_choice[1])
-      )
-    end
-
-    if win?(player_choice, values_that_lose_against_player_choice,
+    if win?(player_choice, player_losing_values,
             computer_choice)
       prompt("You won this round!")
-      player_counter += 1
-    elsif win?(computer_choice, values_that_lose_against_computer_choice,
+      player_counter = increment_counter(player_counter)
+    elsif win?(computer_choice, computer_losing_values,
                player_choice)
       prompt("The computer won this round!")
-      computer_counter += 1
+      computer_counter = increment_counter(computer_counter)
     else
       prompt("This round is a tie!")
     end
