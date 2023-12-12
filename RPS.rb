@@ -39,11 +39,11 @@ def request_player_input
   end
 end
 
-def set_player_choice(player_input, player_value)
+def set_player_choice(player_input, associated_value)
   VALID_CHOICES.select do |valid_choice_key, valid_choice_value|
     if player_input == valid_choice_key
-      player_value = valid_choice_value
-      return player_value
+      associated_value = valid_choice_value
+      return associated_value
     end
   end
 end
@@ -91,7 +91,7 @@ loop do
     # SECTION 1 - GET CHOICES FOR PLAYER AND COMPUTER
 
     player_input = ''
-    player_value = ''
+    associated_value = ''
     player_choice = ''
 
     loop do
@@ -99,7 +99,7 @@ loop do
 
       player_input = Kernel.gets().chomp().downcase()
 
-      player_choice = set_player_choice(player_input, player_value)
+      player_choice = set_player_choice(player_input, associated_value)
 
       if VALID_CHOICES.values.include?(player_choice)
         break
