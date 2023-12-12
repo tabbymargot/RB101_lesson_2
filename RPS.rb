@@ -90,7 +90,6 @@ loop do
     # SECTION 1 - GET CHOICES FOR PLAYER AND COMPUTER
 
     player_input = ''
-    # associated_value = ''
     player_choice = ''
 
     loop do
