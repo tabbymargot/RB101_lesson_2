@@ -18,12 +18,15 @@ def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
+puts
 prompt("Welcome to Rock, Paper, Scissors, Lizard, Spock!")
+puts
 prompt("The game will continue until either the player or the
 computer reaches three wins. At that point, the match will be over,
 and the winning player becomes the grand winner. Good luck!")
-
+puts
 puts "-----------------------------------------"
+puts
 
 loop do
   player_counter = 0
@@ -59,14 +62,14 @@ loop do
     computer_choice = VALID_CHOICES.values.sample
 
     prompt("You chose: #{player_choice}; Computer chose: #{computer_choice}")
+    puts
 
     # SECTION 2 - COMPARE CHOICES AND DETERMINE THE WINNER OF EACH ROUND
 
-    # Create arrays containing losing values for each player.
-    # This method takes the WINNERS_LOSERS hash and interates through
-    # each key / value pair. When the key matches the chosen item, 
+    # This method creates arrays containing losing values for each player.
+    # It takes the WINNERS_LOSERS hash and interates through
+    # each key / value pair. When the key matches the chosen item,
     # the key's values are returned and stored in a variable.
-    
     def return_losing_values(winners_losers, choice)
       winners_losers.select do |key, value|
         if key == choice
@@ -74,22 +77,18 @@ loop do
         end
       end
     end
-    
-    player_losing_values = return_losing_values(WINNERS_LOSERS, player_choice)
-    computer_losing_values = return_losing_values(WINNERS_LOSERS, computer_choice)
-
+    player_losing_values =
+      return_losing_values(WINNERS_LOSERS, player_choice)
+    computer_losing_values =
+      return_losing_values(WINNERS_LOSERS, computer_choice)
 
     # Returns true if second_choice is included in the losing_values array.
     def win?(first_choice, losing_values, second_choice)
       first_choice && losing_values.include?(second_choice)
     end
-    
+
     def increment_counter(counter)
-      counter += 1
-    end   
-    
-    def print_result()
-      prompt("You won this round!")
+      counter + 1
     end
 
     if win?(player_choice, player_losing_values,
@@ -107,17 +106,22 @@ loop do
     if player_counter < 3 && computer_counter < 3
       prompt("Your current score is #{player_counter}.")
       prompt("The computer's current score is #{computer_counter}.")
+      puts
+      sleep(3)
     end
 
     # SECTION 3 - OUTPUT THE OVERALL WINNER
 
+    def print_winning_message(first_words)
+      puts
+      prompt("#{first_words} the first to 3 and therefore the winner!")
+    end
+
     if player_counter == 3
-      prompt("You are the first to 3 and you are therefore the winner!
-      Well done!")
+      print_winning_message("You are")
       break
     elsif computer_counter == 3
-      prompt("The computer is the first to 3 and is therefore the winner.
-      Better luck next time!")
+      print_winning_message("The computer is")
       break
     end
   end
