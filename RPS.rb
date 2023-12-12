@@ -1,3 +1,5 @@
+######## VARIABLES AND HELPER METHODS ########
+
 VALID_CHOICES = {
   'r' => 'rock',
   'p' => 'paper',
@@ -18,15 +20,68 @@ def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-puts
-prompt("Welcome to Rock, Paper, Scissors, Lizard, Spock!")
-puts
-prompt("The game will continue until either the player or the
-computer reaches three wins. At that point, the match will be over,
-and the winning player becomes the grand winner. Good luck!")
-puts
-puts "-----------------------------------------"
-puts
+def print_welcome_message
+  puts
+  prompt("Welcome to Rock, Paper, Scissors, Lizard, Spock!")
+  puts
+  prompt("The game will continue until either the player or the
+  computer reaches three wins. At that point, the match will be over,
+  and the winning player becomes the grand winner. Good luck!")
+  puts
+  puts "-----------------------------------------"
+  puts
+end
+
+def request_player_input
+  prompt("Choose one of the following options:")
+  VALID_CHOICES.each do |valid_choice_key, valid_choice_value|
+    prompt("Type #{valid_choice_key} for #{valid_choice_value}")
+  end
+end
+
+def set_player_choice(player_input, player_value)
+  VALID_CHOICES.select do |valid_choice_key, valid_choice_value|
+    if player_input == valid_choice_key
+      player_value = valid_choice_value
+      return player_value
+    end
+  end
+end
+
+# This method creates arrays containing losing values for each player.
+# It takes the WINNERS_LOSERS hash and interates through
+# each key / value pair. When the key matches the chosen item,
+# the key's values are returned and stored in a variable.
+def losing_values(winners_losers, choice)
+  winners_losers.select do |key, values|
+    if key == choice
+      return values
+    end
+  end
+end
+
+# Returns true if second_choice is included in the losing_values array.
+def win?(first_choice, losing_values, second_choice)
+  first_choice && losing_values.include?(second_choice)
+end
+
+def increment_counter(counter)
+  counter + 1
+end
+
+def print_winning_message(first_words)
+  puts
+  prompt("#{first_words} the first to 3 and therefore the winner!")
+end
+
+def play_again?
+  prompt("Do you want to play again?")
+  Kernel.gets().chomp()
+end
+
+######## MAIN PROGRAM STARTS HERE ########
+
+print_welcome_message()
 
 loop do
   player_counter = 0
@@ -36,21 +91,15 @@ loop do
     # SECTION 1 - GET CHOICES FOR PLAYER AND COMPUTER
 
     player_input = ''
+    player_value = ''
     player_choice = ''
+
     loop do
-      prompt("Choose one of the following options:")
-      VALID_CHOICES.each do |valid_choice_key, valid_choice_value|
-        prompt("Type #{valid_choice_key} for #{valid_choice_value}")
-      end
+      request_player_input()
 
       player_input = Kernel.gets().chomp().downcase()
 
-      VALID_CHOICES.select do |valid_choice_key, valid_choice_value|
-        if player_input == valid_choice_key
-          player_choice = valid_choice_value
-          break
-        end
-      end
+      player_choice = set_player_choice(player_input, player_value)
 
       if VALID_CHOICES.values.include?(player_choice)
         break
@@ -66,30 +115,10 @@ loop do
 
     # SECTION 2 - COMPARE CHOICES AND DETERMINE THE WINNER OF EACH ROUND
 
-    # This method creates arrays containing losing values for each player.
-    # It takes the WINNERS_LOSERS hash and interates through
-    # each key / value pair. When the key matches the chosen item,
-    # the key's values are returned and stored in a variable.
-    def return_losing_values(winners_losers, choice)
-      winners_losers.select do |key, value|
-        if key == choice
-          return value
-        end
-      end
-    end
     player_losing_values =
-      return_losing_values(WINNERS_LOSERS, player_choice)
+      losing_values(WINNERS_LOSERS, player_choice)
     computer_losing_values =
-      return_losing_values(WINNERS_LOSERS, computer_choice)
-
-    # Returns true if second_choice is included in the losing_values array.
-    def win?(first_choice, losing_values, second_choice)
-      first_choice && losing_values.include?(second_choice)
-    end
-
-    def increment_counter(counter)
-      counter + 1
-    end
+      losing_values(WINNERS_LOSERS, computer_choice)
 
     if win?(player_choice, player_losing_values,
             computer_choice)
@@ -110,12 +139,7 @@ loop do
       sleep(3)
     end
 
-    # SECTION 3 - OUTPUT THE OVERALL WINNER
-
-    def print_winning_message(first_words)
-      puts
-      prompt("#{first_words} the first to 3 and therefore the winner!")
-    end
+    # SECTION 3 - OUTPUT MESSAGE ANNOUNCING THE OVERALL WINNER
 
     if player_counter == 3
       print_winning_message("You are")
@@ -128,8 +152,7 @@ loop do
 
   # SECTION 4 - ASK IF PLAYER WANTS TO PLAY AGAIN
 
-  prompt("Do you want to play again?")
-  answer = Kernel.gets().chomp()
+  answer = play_again?()
   break unless answer.downcase().start_with?('y')
 end
 
